@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    {% if order.items.all.count == 1 %}
+        <title>Buy item {{ order.items.first.pk }}</title>
+    {% else %}
+        <title>Buy order {{ order.pk }}</title>
+    {% endif %}
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+
+<body>
+    {% for item in order.items.all %}
+        <h1>{{ item.name }}</h1>
+        <p>{{ item.description }}</p>
+        <hr>
+    {% endfor %}
+    <button id="buy-button">Buy</button>
+    <script type="text/javascript">
+        var stripe = Stripe('{{ stripe_pk }}');
+        var buyButton = document.getElementById('buy-button');
+        buyButton.addEventListener('click', function() {
+            fetch('/buy/{{ order.pk }}', {method: 'GET'})
+                .then(response => { return response.json() })
+                .then(session => { stripe.redirectToCheckout({ sessionId: session.id}) });
+        });
+    </script>
+</body>
+</html>
