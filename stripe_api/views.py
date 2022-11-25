@@ -41,12 +41,12 @@ class CreateCheckoutSessionView(View):
                         'currency': 'usd',
                         'unit_amount': item.price,
                         'product_data': {'name': item.name, 'description': item.description},
+                        'tax_behavior': 'exclusive',
                     },
                 }
             )
             if item.tax:
                 items[-1]['price_data']['product_data']['tax_code'] = 'txcd_' + item.tax.code
-                items[-1]['price_data']['tax_behavior'] = 'exclusive'
         discounts = []
         if order.discount:
             discounts.append({'coupon': order.discount.coupon_id})
