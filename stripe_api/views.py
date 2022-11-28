@@ -62,7 +62,7 @@ class CreateCheckoutSessionView(View):
 
 
 class CreateCouponView(View):
-    '''Create new fixed-percent coupon (m2m link with order is manually)'''
+    '''Create new fixed-percent coupon'''
 
     def get(self, request):
         coupon = stripe.Coupon.create(percent_off=20, duration='once')
